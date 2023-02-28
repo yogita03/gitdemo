@@ -24,6 +24,10 @@
           <label for="email">Email:</label>
           <input type="text" id="email">
         </div>
+        <div>
+            <label for="phone">Phone:</label>
+            <input type="text" id="phonenumber">
+          </div>
         <input class="btn" id='click' type="submit" value="Submit">
       </form>
 
@@ -37,10 +41,16 @@
         event.preventDefault();
         const name = document.getElementById('name').value
         const email = document.getElementById('email').value
-        // const phonenumber = event.target.phonenumber.value;
+        const phonenumber = document.getElementById('phonenumber').value;
         localStorage.setItem('name',name);
         localStorage.setItem('mail',email);
-        // localStorage.setItem('phonenumber',phonenumber);
+        localStorage.setItem('phonenumber',phonenumber);
+        const obj ={
+              name,
+              email,
+              phonenumber
+            }
+            localStorage.setItem('userDetails', JSON.stringify(obj))
 
     }
     // saveToLocalStorage(event)
