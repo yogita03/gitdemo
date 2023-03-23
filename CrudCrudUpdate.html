@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   <script>
+function savetoCrudstorage(event) {
+    event.preventDefault();
+    let userDetails = {
+      Name: document.getElementById("name").value,
+      Email: document.getElementById("emailID").value,
+      Number: document.getElementById("phone").value,
+     
+    };
+
+    axios
+      .post(
+        "https://crudcrud.com/api/c452597daa62424fa3ea33157ebcd103/ApointmentData",
+        userDetails
+      )
+      .then((response) => {
+        showNewUseronScreen(response.data);
+      })
+      .catch((err) => console.log(err));
+  }
+
+  window.addEventListener("DOMContentLoaded", () => {
+    axios
+      .get("`https://crudcrud.com/api/c452597daa62424fa3ea33157ebcd103/ApointmentData")
+      .then((response) => {
+        for (let i = 0; i < response.data.length; i++) {
+          showNewUseronScreen(response.data[i]);
+        }
+      })
+      .catch((err) => console.log(err));
+  });
+
+  function showNewUseronScreen(user) {
+    document.getElementById("emailID").value = "";
+    document.getElementById("name").value = "";
+    document.getElementById("phone").value = "";
+   
+
+    const d = document.getElementById("ul");
+    const li = `<li id="${user._id}"> ${user.Name} - ${user.Email} - ${user.Number} 
+      <button onclick = "editUser('${user.Email}','${user.Name}','${user.Number}','${user._id}')"> Edit </button> 
+      <button   onclick = "deleteUser('${user._id}')"> Delete </button> 
+       </li>`;
+
+    d.innerHTML = d.innerHTML + li;
+  }
+
+  function removeUserfromScreen(userId) {
+    let parent = document.getElementById("ul");
+
+    let child = document.getElementById(userId);
+    if (child) {
+      parent.removeChild(child);
+    }
+  }
+
+  function updateUser(userId) {
+    axios
+      .put(
+        `https://crudcrud.com/api/c452597daa62424fa3ea33157ebcd103/ApointmentData/${userId}`
+      )
+      .then((response) => {
+        removeUserfromScreen(userId);
+      });
+  }
+
+  function editUser(Email, Name, Number, userId) {
+    document.getElementById("emailID").value = Email;
+    document.getElementById("name").value = Name;
+    document.getElementById("phone").value = Number;
+   
+
+    updateUser(userId);
+  }
+   </script> 
+</body>
+</html>
